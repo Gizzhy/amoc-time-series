@@ -108,4 +108,8 @@ def butterworth_squared_response(
 
     TODO (student): implement and return ``h2``.
     """
-    raise NotImplementedError("Implement |H(f)|**2 from the formula in the docstring.")
+    freq = np.asarray(freq, dtype="float64")
+    h2 = 1.0 / (1.0 + (freq / f_cut) ** (2 * order))   # single-pass |H(f)|^2
+    if zero_phase:
+        h2 = h2 ** 2                                    # forward-backward squares the response
+    return h2
