@@ -5,6 +5,10 @@
 **Time span:** 1995-11-14 to 2024-05-18 (~28.6 years, 10,414 daily samples).
 **Why:** a long, regularly sampled, single-variable record with strong intrinsic variability — well suited to spectral characterisation — and the overflow limb is a distinct, dynamically interesting AMOC component, untaken by classmates.
 
+Gideon Akinlotan, Data Analysis in Physical Oceanography, Summer 2026.
+
+Github repository: https://github.com/Gizzhy/amoc-time-series
+
 ## Part A — Characterising the series
 
 This analysis characterises the Faroe Bank Channel (FBC) overflow volume
