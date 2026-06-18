@@ -27,6 +27,8 @@ to 4.86 Sv (range 4.36 Sv). The distribution is unimodal and approximately
 Gaussian with a slight positive skew — a longer tail toward strong-overflow events,
 visible as occasional excursions above ~4 Sv — while the series otherwise
 fluctuates around a stable ~2.2 Sv mean with no apparent long-term trend.
+![FBC overflow transport distribution](figures/figA_histogram.png)
+![FBC overflow raw daily series](figures/figA_timeseries.png).
 
 ## Part B — The spectrum
 
