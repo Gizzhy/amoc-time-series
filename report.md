@@ -27,3 +27,54 @@ to 4.86 Sv (range 4.36 Sv). The distribution is unimodal and approximately
 Gaussian with a slight positive skew — a longer tail toward strong-overflow events,
 visible as occasional excursions above ~4 Sv — while the series otherwise
 fluctuates around a stable ~2.2 Sv mean with no apparent long-term trend.
+
+## Part B — The spectrum
+
+I estimate the power spectral density of the gap-filled series using Welch's
+overlapped-segment averaging, with Hann-tapered segments of 1024 samples
+(~2.8 years) and 50% overlap. This yields roughly 19 segments and therefore about
+38 degrees of freedom (≈ twice the segment count), and resolves frequencies down
+to ~9.8×10⁻⁴ cycles per day (cpd). The segment length is a deliberate compromise:
+shorter segments (512) gave a smoother estimate but smeared the annual peak toward
+the resolution floor, while longer segments (2048) sharpened that peak at the cost
+of a far noisier high-frequency tail. The 1024-sample choice keeps the annual peak
+distinct while remaining acceptably smooth. Each segment is linearly detrended
+before transforming, so the lowest frequencies are not dominated by the mean or any
+residual drift.
+
+Integrating the estimated spectrum over frequency recovers 96.4% of the series
+variance (Parseval ratio 0.964), confirming the estimate is correctly normalised;
+the small shortfall is consistent with the variance trimmed by per-segment
+detrending and the Hann taper.
+
+The spectrum is markedly red: power falls by roughly two orders of magnitude from
+the lowest resolved frequencies to the Nyquist frequency (1 cpd, i.e. the 2-day
+period set by daily sampling), with the steepest rolloff above ~0.1 cpd. This
+concentration of variance at long periods is the expected signature of an
+overflow whose strength is modulated by slowly varying density and pressure
+gradients across the sill, with weaker, broadband day-to-day "weather". Two
+discrete timescales stand out against this red continuum. The clearest is a peak
+near 2.7×10⁻³ cpd, a period of ~365 days — the annual cycle, reflecting the
+seasonal modulation of the overflow. A second, sharper line appears near
+7×10⁻² cpd (~14 days), consistent with the fortnightly spring–neap tidal cycle
+expected at a tidally energetic sill; I flag this as plausible but tentative given
+the single record. The broad band of elevated power between roughly 5×10⁻³ and
+5×10⁻² cpd (periods of ~20–200 days) represents the overflow's intraseasonal and
+mesoscale variability.
+
+The two required figures make the filtering explicit. Figure 1 overlays the
+~60-day Tukey low-pass on the raw series: the filtered curve follows the slow,
+largely annual swings around the ~2.2 Sv mean while suppressing the daily spikes.
+Figure 2 shows the corresponding spectra on log–log axes. Below the filter cutoff
+the raw and filtered spectra coincide, confirming the low frequencies pass
+unchanged; above it the filtered spectrum falls away steeply — by many orders of
+magnitude toward Nyquist — as the high-frequency variance is removed. The
+fortnightly tidal line, which is sharp in the raw spectrum, is strongly attenuated
+in the filtered one, while the annual peak (in the passband) survives. The
+oscillatory lobes in the filtered spectrum at the lowest frequencies are the
+sidelobes of the window's frequency response, not features of the data.
+
+A caveat carried from Part A: ~5.5% of the record was linearly interpolated across
+28 multi-week gaps. Interpolation acts as a mild local low-pass, so the very
+highest frequencies are modestly damped relative to a gap-free record; averaged
+over many Welch segments this effect is small, but it is not zero.
