@@ -28,7 +28,7 @@ Gaussian with a slight positive skew — a longer tail toward strong-overflow ev
 visible as occasional excursions above ~4 Sv — while the series otherwise
 fluctuates around a stable ~2.2 Sv mean with no apparent long-term trend.
 ![FBC overflow transport distribution](figures/figA_histogram.png)
-![FBC overflow raw daily series](figures/figA_timeseries.png).
+![FBC overflow raw daily series](figures/figA_timeseries.png)
 
 ## Part B — The spectrum
 
@@ -64,9 +64,11 @@ the single record. The broad band of elevated power between roughly 5×10⁻³ a
 5×10⁻² cpd (periods of ~20–200 days) represents the overflow's intraseasonal and
 mesoscale variability.
 
-The two required figures make the filtering explicit. Figure 1 overlays the
-~60-day Tukey low-pass on the raw series: the filtered curve follows the slow,
-largely annual swings around the ~2.2 Sv mean while suppressing the daily spikes.
+The two required figures make the filtering explicit.
+![Figure 1 — FBC overflow transport: raw daily series with ~60-day Tukey low-pass overlay](figures/fig1_timeseries.png)
+
+![Figure 2 — FBC overflow power spectrum (Welch, 1024-sample Hann segments, 50% overlap): raw vs Tukey low-pass filtered, log–log axes](figures/fig2_spectra.png)
+Figure 1 overlays the ~60-day Tukey low-pass on the raw series: the filtered curve follows the slow, largely annual swings around the ~2.2 Sv mean while suppressing the daily spikes.
 Figure 2 shows the corresponding spectra on log–log axes. Below the filter cutoff
 the raw and filtered spectra coincide, confirming the low frequencies pass
 unchanged; above it the filtered spectrum falls away steeply — by many orders of
