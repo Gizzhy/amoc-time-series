@@ -8,6 +8,7 @@ define the contract each estimator must meet.
 from __future__ import annotations
 
 import numpy as np
+from scipy.signal import get_window, welch
 
 
 def frequency_axis(n: int, dt_days: float) -> np.ndarray:
@@ -66,7 +67,20 @@ def raw_periodogram(
     squared magnitude, and apply the one-sided + window + ``dt`` normalisation so
     that :func:`parseval_ratio` returns approximately 1.
     """
-    raise NotImplementedError("Implement the one-sided, Parseval-normalised periodogram.")
+    x = np.asarray(x, dtype="float64")
+    n = x.size
+    if detrend:
+        t = np.arange(n)
+        x = x - np.polyval(np.polyfit(t, x, 1), t)   # remove mean + linear trend
+    w = get_window(window, n)
+    X = np.fft.rfft(x * w)
+    psd = (np.abs(X) ** 2) * dt_days / np.sum(w ** 2)
+    if n % 2 == 0:
+        psd[1:-1] *= 2.0      # double interior bins; not DC, not Nyquist
+    else:
+        psd[1:] *= 2.0        # n odd: no exact Nyquist bin
+    freq = np.fft.rfftfreq(n, d=dt_days)
+    return freq, psd
 
 
 def welch_psd(
@@ -109,7 +123,19 @@ def welch_psd(
 
     TODO (student): implement the segmenting, windowing, averaging, and normalisation.
     """
-    raise NotImplementedError("Implement Welch overlapped-segment averaging.")
+    x = np.asarray(x, dtype="float64")
+    noverlap = int(round(overlap * segment_length))
+    freq, psd = welch(
+        x,
+        fs=1.0 / dt_days,
+        window=window,
+        nperseg=segment_length,
+        noverlap=noverlap,
+        detrend="linear",
+        return_onesided=True,
+        scaling="density",
+    )
+    return freq, psd
 
 
 def parseval_ratio(x: np.ndarray, freq: np.ndarray, psd: np.ndarray) -> float:

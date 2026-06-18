@@ -39,7 +39,17 @@ def summary_stats(values: np.ndarray) -> dict[str, float]:
 
     TODO (student): implement and return the dictionary.
     """
-    raise NotImplementedError("Return the summary-statistics dictionary.")
+    values = np.asarray(values, dtype="float64")
+    return {
+        "n": int(values.size),
+        "n_missing": int(np.isnan(values).sum()),
+        "mean": float(np.nanmean(values)),
+        "std": float(np.nanstd(values, ddof=1)),   # sample std; ddof=1
+        "median": float(np.nanmedian(values)),
+        "min": float(np.nanmin(values)),
+        "max": float(np.nanmax(values)),
+        "range": float(np.nanmax(values) - np.nanmin(values)),
+    }
 
 
 def seasonal_cycle(
@@ -72,7 +82,16 @@ def seasonal_cycle(
 
     TODO (student): implement with a pandas groupby and return the DataFrame.
     """
-    raise NotImplementedError("Group by calendar period and aggregate mean and median.")
+    s = pd.Series(np.asarray(values, dtype="float64"), index=pd.DatetimeIndex(time))
+    if by == "month":
+        period = s.index.month
+    elif by == "dayofyear":
+        period = s.index.dayofyear
+    else:
+        raise ValueError(f"unsupported period: {by!r}")
+    clim = s.groupby(period).agg(["mean", "median"])
+    clim.index.name = by
+    return clim
 
 
 def decorrelation_timescale(
@@ -114,4 +133,19 @@ def decorrelation_timescale(
     TODO (student): implement the autocovariance, the zero-crossing integral, and
     return ``(integral_scale, ndof)``.
     """
-    raise NotImplementedError("Implement the integral-timescale d.o.f. estimate.")
+    x = np.asarray(values, dtype="float64")
+    x = x - x.mean()
+    n = x.size
+    nfft = 1
+    while nfft < 2 * n:
+        nfft *= 2
+    f = np.fft.rfft(x, nfft)
+    acov = np.fft.irfft(f * np.conj(f), nfft)[:n] / n   # biased autocovariance, lags 0..n-1
+    R = acov / acov[0]                                  # normalised; R(0) = 1
+    tau = 0.0
+    for i in range(n - 1):
+        if R[i] < 0:                                    # integrate to first zero crossing
+            break
+        tau += dt * (R[i] + R[i + 1]) / 2.0             # one-sided trapezoidal integral
+    ndof = n * dt / tau - 1.0
+    return float(tau), float(ndof)
