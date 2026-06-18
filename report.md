@@ -1,3 +1,10 @@
+# Assignment 1 — Characterising an AMOC time series
+
+**Array:** Faroe Bank Channel (FBC) overflow array (Nordic Seas → North Atlantic, ~61.5°N, 8.2°W), via AMOCatlas `read.fbc()`.
+**Variable:** `TRANS_FBC` — daily overflow volume transport (Sv).
+**Time span:** 1995-11-14 to 2024-05-18 (~28.6 years, 10,414 daily samples).
+**Why:** a long, regularly sampled, single-variable record with strong intrinsic variability — well suited to spectral characterisation — and the overflow limb is a distinct, dynamically interesting AMOC component, untaken by classmates.
+
 ## Part A — Characterising the series
 
 This analysis characterises the Faroe Bank Channel (FBC) overflow volume
@@ -83,14 +90,13 @@ A caveat carried from Part A: ~5.5% of the record was linearly interpolated acro
 highest frequencies are modestly damped relative to a gap-free record; averaged
 over many Welch segments this effect is small, but it is not zero.
 
-
 ## Part C — Filter design
 
 The low-pass used for the figures is a centred, zero-phase Tukey-windowed running
 mean (shape parameter α = 0.5) of length 60 samples (60 days). Its squared
 frequency response (Figure C) makes the design choice explicit. The half-power
 point (|H|² = 0.5) lies at ≈ 0.0096 cpd — a period of ~104 days — so the window
-*length* is not the cutoff *period*: a 60-sample tapered mean passes everything
+_length_ is not the cutoff _period_: a 60-sample tapered mean passes everything
 slower than ~3–4 months. This is the intended behaviour. The annual cycle at
 2.7×10⁻³ cpd sits well inside the passband (|H|² ≈ 0.95, essentially
 unattenuated), while the fortnightly tidal line at 7×10⁻² cpd and the broadband
